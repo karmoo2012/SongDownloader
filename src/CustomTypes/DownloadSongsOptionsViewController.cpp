@@ -101,7 +101,7 @@ void DownloadSongsOptionsViewController::DidActivate(bool firstActivation, bool 
         QuestUI::BeatSaberUI::AddHoverHint(Service->get_gameObject(), getModConfig().Service.GetHoverHint());
         Service->get_transform()->GetParent()->GetComponent<LayoutElement*>()->set_preferredWidth(50.0f);
 
-        ListType_BeatSaver = QuestUI::BeatSaberUI::CreateDropdown(settingsLayoutTransform, "List", getModConfig().ListType_BeatSaver.GetValue(), { "Key", "Search", "User"  },
+        ListType_BeatSaver = QuestUI::BeatSaberUI::CreateDropdown(settingsLayoutTransform, "List", getModConfig().ListType_BeatSaver.GetValue(), { "Key", "Search", "User","Playlist" },
             [this](StringW value) {
                 if (LastListType == "Bookmarks") {
                     DownloadSongsSearchViewController::SearchQuery.clear();
