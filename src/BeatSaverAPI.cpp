@@ -333,7 +333,7 @@ namespace BeatSaver::API {
         );
     }
 
-    void SearchPlaylistAsync(std::string query, int pageIndex, std::function<void(std::optional<BeatSaver::Page>)> finished){
+    void SearchPlaylistAsync(std::string query, int pageIndex, std::function<void(std::optional<BeatSaver::Playlist>)> finished){
         exception.clear();
         std::string searchPath = API_URL + "/playlists/id/" + query + "/" + std::to_string(pageIndex) ;
         LOG_DEBUG("%s", searchPath.c_str());
@@ -344,7 +344,7 @@ namespace BeatSaver::API {
                 }
                 else {
                     try {
-                        BeatSaver::Page page;
+                        BeatSaver::Playlist page;
                         page.Deserialize(document.GetObject());
                         finished(page);
                     }
