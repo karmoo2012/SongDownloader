@@ -115,6 +115,22 @@ void DownloadSongsOptionsViewController::DidActivate(bool firstActivation, bool 
                     DownloadSongsSearchViewController::SearchQuery.clear();
                     searchViewController->SearchField->SetText(emptyString);
                 }
+                if( value == "Playlist" ){
+                    Automapper->get_gameObject()->SetActive(false);
+                    SortOrder->get_gameObject()->SetActive(false);
+                    NEdropdown->get_gameObject()->SetActive(false);
+                    MEdropdown->get_gameObject()->SetActive(false);
+                    Chroma->get_gameObject()->SetActive(false);
+                    Ranked->get_gameObject()->SetActive(false);
+                }else{
+                    Automapper->get_gameObject()->SetActive(true);
+                    SortOrder->get_gameObject()->SetActive(true);
+                    NEdropdown->get_gameObject()->SetActive(true);
+                    MEdropdown->get_gameObject()->SetActive(true);
+                    Chroma->get_gameObject()->SetActive(true);
+                    Ranked->get_transform()->GetParent()->get_gameObject()->SetActive(true);
+                    Ranked->get_gameObject()->SetActive(true);
+                }
                 LastListType = static_cast<std::string>(value);
                 getModConfig().ListType_BeatSaver.SetValue(LastListType);
                 DownloadSongsSearchViewController::SetPage(0);
