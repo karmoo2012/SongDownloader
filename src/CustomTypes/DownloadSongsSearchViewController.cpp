@@ -227,7 +227,7 @@ void DownloadSongsSearchViewController::SearchPlaylist(int currentSearchIndex) {
                     QuestUI::MainThreadScheduler::Schedule(
                         [this, currentSearchIndex, plist] {
                             if (currentSearchIndex == DownloadSongsSearchViewController::searchIndex) {
-                                if (page.has_value() && !plist.value().GetMaps().empty()) {
+                                if (plist.has_value() && !plist.value().GetMaps().empty()) {
                                     auto maps = plist.value().GetMaps();
                                     auto mapsSize = maps.size();
                                     int mapIndex = 0;
