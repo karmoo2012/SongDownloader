@@ -3,6 +3,7 @@
 #include "Types/BeastSaber/Song.hpp"
 
 #include "Types/BeatSaver/Page.hpp"
+#include "Types/BeatSaver/Playlist.hpp"
 
 #include "Types/ScoreSaber/Page.hpp"
 #include "Types/ScoreSaber/Leaderboards.hpp"
