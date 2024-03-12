@@ -4,13 +4,6 @@ env:
   module_id: songdownloader
   qmodName: SongDownloader
 
-on:
-  workflow_dispatch:
-  push:
-    branches-ignore:
-      - 'version-v*'
-  pull_request:
-
 jobs:
   build:
     runs-on: ubuntu-latest
