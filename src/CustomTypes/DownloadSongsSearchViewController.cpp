@@ -219,6 +219,43 @@ void DownloadSongsSearchViewController::SearchKey(int currentSearchIndex) {
     }
     else loadingControl->ShowText("Please type in a key!", false);
 }
+void DownloadSongsSearchViewController::SearchPlaylist(int currentSearchIndex) {
+     if (!DownloadSongsSearchViewController::SearchQuery.empty()) {
+         BeatSaver::API::SearchPlaylistAsync(DownloadSongsSearchViewController::SearchQuery, DownloadSongsSearchViewController::searchPage,
+            [this, currentSearchIndex](std::optional<BeatSaver::Page> page) {
+                if (currentSearchIndex == DownloadSongsSearchViewController::searchIndex) {
+                    QuestUI::MainThreadScheduler::Schedule(
+                        [this, currentSearchIndex, page] {
+                            if (currentSearchIndex == DownloadSongsSearchViewController::searchIndex) {
+                                if (page.has_value() && !page.value().GetDocs().empty()) {
+                                    auto maps = page.value().GetDocs();
+                                    auto mapsSize = maps.size();
+                                    int mapIndex = 0;
+                                    for (int i = 0; i < ENTRIES_PER_PAGE; i++) {
+                                        auto& searchEntry = searchEntries[i];
+                                        if (mapIndex < mapsSize) {
+                                            loadingControl->Hide();
+                                            auto& map = maps.at(mapIndex);
+                                            searchEntry.SetBeatmap(map);
+                                        }
+                                        else {
+                                            searchEntry.Disable();
+                                        }
+                                        mapIndex++;
+                                    }
+                                }
+                                else {
+                                    if (!BeatSaver::API::exception.empty()) loadingControl->ShowText(BeatSaver::API::exception, true);
+                                    else if (DownloadSongsSearchViewController::SearchQuery.empty()) loadingControl->ShowText("No Results,\nis your Internet working?", true);
+                                    else loadingControl->ShowText("No Songs Found!", true);
+                                }
+                            }
+                        }
+                    );
+                }
+            });
+     }
+}
 
 void DownloadSongsSearchViewController::SearchSongs(int currentSearchIndex) {
     BeatSaver::API::SearchPagedAsync(DownloadSongsSearchViewController::SearchQuery, DownloadSongsSearchViewController::searchPage,
@@ -556,6 +593,9 @@ void DownloadSongsSearchViewController::Search() {
         }
         else if (getModConfig().ListType_BeatSaver.GetValue() == "User") {
             searchViewController->SearchUser(currentSearchIndex);
+        }
+        else if (getModConfig().ListType_BeatSaver.GetValue() == "Playlist") {
+            searchViewController->SearchPlaylist(currentSearchIndex);
         }
         else {
             searchViewController->loadingControl->ShowText("Invalid Selection for\nService BeatSaver!", false);
