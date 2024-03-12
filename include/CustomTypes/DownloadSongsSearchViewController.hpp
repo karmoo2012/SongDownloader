@@ -109,6 +109,8 @@ DECLARE_CLASS_CODEGEN(SongDownloader, DownloadSongsSearchViewController, HMUI::V
 
     DECLARE_INSTANCE_METHOD(void, SearchKey, int);
 
+    DECLARE_INSTANCE_METHOD(void, SearchPlaylist, int);
+
     DECLARE_INSTANCE_METHOD(void, GetCuratorRecommended, int);
 
     DECLARE_INSTANCE_METHOD(void, GetBookmarks, int);
