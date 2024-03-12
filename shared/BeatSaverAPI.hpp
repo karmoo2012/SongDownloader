@@ -68,6 +68,7 @@ namespace BeatSaver::API {
 
     void GetUserByNameAsync(std::string username, std::function<void(std::optional<BeatSaver::UserDetail>)> finished);
 
+    void SearchPlaylistAsync(std::string query, int pageIndex, std::function<void(std::optional<BeatSaver::Page>)> finished);
     /// <summary>
     /// Search on BeatSaver
     /// </summary>
