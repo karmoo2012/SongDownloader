@@ -1,11 +1,11 @@
 name: NDK Build
 
+on:
+  workflow_dispatch:
+  
 env:
   module_id: songdownloader
   qmodName: SongDownloader
-  
-on:
-  workflow_dispatch:
   
 jobs:
   build:
