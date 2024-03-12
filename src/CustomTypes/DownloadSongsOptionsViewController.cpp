@@ -76,14 +76,22 @@ void DownloadSongsOptionsViewController::DidActivate(bool firstActivation, bool 
                     ListType_BeastSaber->get_transform()->GetParent()->get_gameObject()->SetActive(false);
                     ListType_ScoreSaber->get_transform()->GetParent()->get_gameObject()->SetActive(false);
                     ListType_BeatSaver->get_transform()->GetParent()->get_gameObject()->SetActive(true);
-                    Automapper->get_gameObject()->SetActive(true);
-                    SortOrder->get_gameObject()->SetActive(true);
-                    NEdropdown->get_gameObject()->SetActive(true);
-                    MEdropdown->get_gameObject()->SetActive(true);
-                    Chroma->get_gameObject()->SetActive(true);
-                    //RankedToggle->get_transform()->GetParent()->get_gameObject()->SetActive(false);
-                    Ranked->get_transform()->GetParent()->get_gameObject()->SetActive(true);
-                    Ranked->get_gameObject()->SetActive(true);
+                        if( getModConfig().ListType_BeatSaver.GetValue() == "Playlist" ){
+                            Automapper->get_gameObject()->SetActive(false);
+                            SortOrder->get_gameObject()->SetActive(false);
+                            NEdropdown->get_gameObject()->SetActive(false);
+                            MEdropdown->get_gameObject()->SetActive(false);
+                            Chroma->get_gameObject()->SetActive(false);
+                            Ranked->get_gameObject()->SetActive(false);
+                        }else{
+                            Automapper->get_gameObject()->SetActive(true);
+                            SortOrder->get_gameObject()->SetActive(true);
+                            NEdropdown->get_gameObject()->SetActive(true);
+                            MEdropdown->get_gameObject()->SetActive(true);
+                            Chroma->get_gameObject()->SetActive(true);
+                            Ranked->get_transform()->GetParent()->get_gameObject()->SetActive(true);
+                            Ranked->get_gameObject()->SetActive(true);
+                        }
                 }
                 if (value == "BeastSaber" && getModConfig().ListType_BeastSaber.GetValue() == "Bookmarks") {
                     DownloadSongsSearchViewController::SearchQuery = getModConfig().BookmarkUsername.GetValue();
