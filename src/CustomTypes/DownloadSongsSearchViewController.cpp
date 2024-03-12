@@ -222,20 +222,21 @@ void DownloadSongsSearchViewController::SearchKey(int currentSearchIndex) {
 void DownloadSongsSearchViewController::SearchPlaylist(int currentSearchIndex) {
      if (!DownloadSongsSearchViewController::SearchQuery.empty()) {
          BeatSaver::API::SearchPlaylistAsync(DownloadSongsSearchViewController::SearchQuery, DownloadSongsSearchViewController::searchPage,
-            [this, currentSearchIndex](std::optional<BeatSaver::Page> page) {
+            [this, currentSearchIndex](std::optional<BeatSaver::Playlist> plist) {
                 if (currentSearchIndex == DownloadSongsSearchViewController::searchIndex) {
                     QuestUI::MainThreadScheduler::Schedule(
-                        [this, currentSearchIndex, page] {
+                        [this, currentSearchIndex, plist] {
                             if (currentSearchIndex == DownloadSongsSearchViewController::searchIndex) {
-                                if (page.has_value() && !page.value().GetDocs().empty()) {
-                                    auto maps = page.value().GetDocs();
+                                if (page.has_value() && !plist.value().GetMaps().empty()) {
+                                    auto maps = plist.value().GetMaps();
                                     auto mapsSize = maps.size();
                                     int mapIndex = 0;
                                     for (int i = 0; i < ENTRIES_PER_PAGE; i++) {
                                         auto& searchEntry = searchEntries[i];
                                         if (mapIndex < mapsSize) {
                                             loadingControl->Hide();
-                                            auto& map = maps.at(mapIndex);
+                                            auto& mapItem = maps.at(mapIndex);
+                                            auto map = mapItem.GetMap();
                                             searchEntry.SetBeatmap(map);
                                         }
                                         else {
