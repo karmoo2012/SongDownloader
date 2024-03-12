@@ -333,6 +333,31 @@ namespace BeatSaver::API {
         );
     }
 
+    void SearchPlaylistAsync(std::string query, int pageIndex, std::function<void(std::optional<BeatSaver::Page>)> finished){
+        exception.clear();
+        std::string searchPath = API_URL + "/playlists/id/" + query + "/" + std::to_string(pageIndex) ;
+        LOG_DEBUG("%s", searchPath.c_str());
+        WebUtils::GetJSONAsync(searchPath,
+            [finished](long httpCode, bool error, rapidjson::Document& document) {
+                if (error) {
+                    finished(std::nullopt);
+                }
+                else {
+                    try {
+                        BeatSaver::Page page;
+                        page.Deserialize(document.GetObject());
+                        finished(page);
+                    }
+                    catch (const std::exception& e) {
+                        LOG_ERROR("%s", e.what());
+                        exception = e.what();
+                        finished(std::nullopt);
+                    }
+                }
+            }
+        );
+    }
+
     void SearchPagedAsync(std::string query, int pageIndex, std::function<void(std::optional<BeatSaver::Page>)> finished, std::string sortOrder, std::string automapper, std::string ranked, std::string ME, std::string NE, std::string Chroma) {
         exception.clear();
         std::string searchPath = API_URL + "/search/text/" + std::to_string(pageIndex) + "?sortOrder=" + sortOrder;
