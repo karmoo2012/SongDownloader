@@ -1,7 +1,6 @@
 #pragma once
 #include "../TypeMacros.hpp"
 #include "PlaylistInfo.hpp"
-#include "User.hpp"
 
 #include <vector>
 
