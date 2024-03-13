@@ -256,8 +256,7 @@ void DownloadSongsSearchViewController::SearchPlaylist(int currentSearchIndex) {
                                                         }
                                                         else {
                                                             if (!BeatSaver::API::exception.empty()) loadingControl->ShowText(BeatSaver::API::exception, true);
-                                                            else if (DownloadSongsSearchViewController::SearchQuery.empty()) loadingControl->ShowText("No Results,\nis your Internet working?", true);
-                                                            else loadingControl->ShowText("No Songs Found!", true);
+                                                            else loadingControl->ShowText("No Songs Found for Playlist id:" + std::to_string(playlistItem.GetPlaylistId()), true);
                                                         }
                                                     }
                                                 }
@@ -266,7 +265,13 @@ void DownloadSongsSearchViewController::SearchPlaylist(int currentSearchIndex) {
                                     });
                         });
 
+                    }else{
+                       if (!BeatSaver::API::exception.empty()) loadingControl->ShowText(BeatSaver::API::exception, true);
+                       else loadingControl->ShowText("More than One Playlist Found", true);  
                     }
+                }else{
+                    if (!BeatSaver::API::exception.empty()) loadingControl->ShowText(BeatSaver::API::exception, true);
+                    else loadingControl->ShowText("No Playlist Found", true);  
                 }
             });
                          
