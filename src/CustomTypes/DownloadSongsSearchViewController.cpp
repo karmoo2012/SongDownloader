@@ -221,40 +221,54 @@ void DownloadSongsSearchViewController::SearchKey(int currentSearchIndex) {
 }
 void DownloadSongsSearchViewController::SearchPlaylist(int currentSearchIndex) {
      if (!DownloadSongsSearchViewController::SearchQuery.empty()) {
-         BeatSaver::API::SearchPlaylistAsync(DownloadSongsSearchViewController::SearchQuery, DownloadSongsSearchViewController::searchPage,
-            [this, currentSearchIndex](std::optional<BeatSaver::Playlist> plist) {
-                if (currentSearchIndex == DownloadSongsSearchViewController::searchIndex) {
-                    QuestUI::MainThreadScheduler::Schedule(
-                        [this, currentSearchIndex, plist] {
-                            if (currentSearchIndex == DownloadSongsSearchViewController::searchIndex) {
-                                if (plist.has_value() && !plist.value().GetMaps().empty()) {
-                                    auto maps = plist.value().GetMaps();
-                                    auto mapsSize = maps.size();
-                                    int mapIndex = 0;
-                                    for (int i = 0; i < ENTRIES_PER_PAGE; i++) {
-                                        auto& searchEntry = searchEntries[i];
-                                        if (mapIndex < mapsSize) {
-                                            loadingControl->Hide();
-                                            auto& mapItem = maps.at(mapIndex);
-                                            auto map = mapItem.GetMap();
-                                            searchEntry.SetBeatmap(map);
+        BeatSaver::API::SearchPlaylistByNameAsync(DownloadSongsSearchViewController::SearchQuery,
+            [this, currentSearchIndex](std::optional<BeatSaver::PlaylistPage> pagelist) {
+                if (pagelist.has_value() && !pagelist.value().GetDocs().empty()) {
+                    auto docs = pagelist.value().GetDocs();
+                    if(docs.size() == 1)
+                    {
+                        auto& playlistItem = docs.at(0);
+
+                        BeatSaver::API::SearchPlaylistAsync(playlistItem.GetPlaylistId(), DownloadSongsSearchViewController::searchPage,
+                            [this, currentSearchIndex](std::optional<BeatSaver::Playlist> plist) {
+                                if (currentSearchIndex == DownloadSongsSearchViewController::searchIndex) {
+                                    QuestUI::MainThreadScheduler::Schedule(
+                                        [this, currentSearchIndex, plist] {
+                                            if (currentSearchIndex == DownloadSongsSearchViewController::searchIndex) {
+                                                if (plist.has_value() && !plist.value().GetMaps().empty()) {
+                                                    auto maps = plist.value().GetMaps();
+                                                    auto mapsSize = maps.size();
+                                                    int mapIndex = 0;
+                                                    for (int i = 0; i < ENTRIES_PER_PAGE; i++) {
+                                                        auto& searchEntry = searchEntries[i];
+                                                        if (mapIndex < mapsSize) {
+                                                            loadingControl->Hide();
+                                                            auto& mapItem = maps.at(mapIndex);
+                                                            auto map = mapItem.GetMap();
+                                                            searchEntry.SetBeatmap(map);
+                                                        }
+                                                        else {
+                                                            searchEntry.Disable();
+                                                        }
+                                                        mapIndex++;
+                                                    }
+                                                }
+                                                else {
+                                                    if (!BeatSaver::API::exception.empty()) loadingControl->ShowText(BeatSaver::API::exception, true);
+                                                    else if (DownloadSongsSearchViewController::SearchQuery.empty()) loadingControl->ShowText("No Results,\nis your Internet working?", true);
+                                                    else loadingControl->ShowText("No Songs Found!", true);
+                                                }
+                                            }
                                         }
-                                        else {
-                                            searchEntry.Disable();
-                                        }
-                                        mapIndex++;
-                                    }
+                                    );
                                 }
-                                else {
-                                    if (!BeatSaver::API::exception.empty()) loadingControl->ShowText(BeatSaver::API::exception, true);
-                                    else if (DownloadSongsSearchViewController::SearchQuery.empty()) loadingControl->ShowText("No Results,\nis your Internet working?", true);
-                                    else loadingControl->ShowText("No Songs Found!", true);
-                                }
-                            }
-                        }
-                    );
+                            });
+
+                            
+                    }
                 }
             });
+                         
      }
 }
 
