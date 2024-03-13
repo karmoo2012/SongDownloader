@@ -4,6 +4,7 @@
 
 #include "Types/BeatSaver/Page.hpp"
 #include "Types/BeatSaver/Playlist.hpp"
+#include "Types/BeatSaver/PlaylistPage"
 
 #include "Types/ScoreSaber/Page.hpp"
 #include "Types/ScoreSaber/Leaderboards.hpp"
@@ -69,6 +70,7 @@ namespace BeatSaver::API {
 
     void GetUserByNameAsync(std::string username, std::function<void(std::optional<BeatSaver::UserDetail>)> finished);
 
+    void SearchPlaylistByNameAsync(std::string query, std::function<void(std::optional<BeatSaver::PlaylistPage>)> finished);
     void SearchPlaylistAsync(std::string query, int pageIndex, std::function<void(std::optional<BeatSaver::Playlist>)> finished);
     /// <summary>
     /// Search on BeatSaver
