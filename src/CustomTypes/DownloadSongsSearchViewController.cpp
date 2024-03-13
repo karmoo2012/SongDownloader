@@ -228,8 +228,7 @@ void DownloadSongsSearchViewController::SearchPlaylist(int currentSearchIndex) {
                     if(docs.size() == 1)
                     {
                         auto& playlistItem = docs.at(0);
-
-                        BeatSaver::API::SearchPlaylistAsync(playlistItem.GetPlaylistId(), DownloadSongsSearchViewController::searchPage,
+                        BeatSaver::API::SearchPlaylistAsync(std::to_string(playlistItem.GetPlaylistId()), DownloadSongsSearchViewController::searchPage,
                             [this, currentSearchIndex](std::optional<BeatSaver::Playlist> plist) {
                                 if (currentSearchIndex == DownloadSongsSearchViewController::searchIndex) {
                                     QuestUI::MainThreadScheduler::Schedule(
