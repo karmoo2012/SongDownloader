@@ -256,7 +256,7 @@ void DownloadSongsSearchViewController::SearchPlaylist(int currentSearchIndex) {
                                                         }
                                                         else {
                                                             if (!BeatSaver::API::exception.empty()) loadingControl->ShowText(BeatSaver::API::exception, true);
-                                                            else loadingControl->ShowText("No Songs Found for Playlist id:" + std::to_string(playlistItem.GetPlaylistId()), true);
+                                                            else loadingControl->ShowText("No Songs Found for Playlist", true);
                                                         }
                                                     }
                                                 }
