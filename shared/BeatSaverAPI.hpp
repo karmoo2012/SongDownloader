@@ -4,7 +4,7 @@
 
 #include "Types/BeatSaver/Page.hpp"
 #include "Types/BeatSaver/Playlist.hpp"
-#include "Types/BeatSaver/PlaylistPage"
+#include "Types/BeatSaver/PlaylistPage.hpp"
 
 #include "Types/ScoreSaber/Page.hpp"
 #include "Types/ScoreSaber/Leaderboards.hpp"
