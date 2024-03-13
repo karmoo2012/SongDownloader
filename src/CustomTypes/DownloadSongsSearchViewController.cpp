@@ -265,14 +265,14 @@ void DownloadSongsSearchViewController::SearchPlaylist(int currentSearchIndex) {
                                     });
                         });
 
-                    }else{
+                    }/*else{
                        if (!BeatSaver::API::exception.empty()) loadingControl->ShowText(BeatSaver::API::exception, true);
                        else loadingControl->ShowText("More than One Playlist Found", true);  
-                    }
-                }else{
+                    }*/
+                }/*else{
                     if (!BeatSaver::API::exception.empty()) loadingControl->ShowText(BeatSaver::API::exception, true);
                     else loadingControl->ShowText("No Playlist Found", true);  
-                }
+                }*/
             });
                          
      }
