@@ -333,6 +333,31 @@ namespace BeatSaver::API {
         );
     }
 
+    void SearchPlaylistByNameAsync(std::string query, std::function<void(std::optional<BeatSaver::PlaylistPage>)> finished){
+        exception.clear();
+        std::string searchPath = API_URL + "/playlists/search/0?q=" + query;
+        LOG_DEBUG("%s", searchPath.c_str());
+        WebUtils::GetJSONAsync(searchPath,
+            [finished](long httpCode, bool error, rapidjson::Document& document) {
+                if (error) {
+                    finished(std::nullopt);
+                }
+                else {
+                    try {
+                        BeatSaver::PlaylistPage page;
+                        page.Deserialize(document.GetObject());
+                        finished(page);
+                    }
+                    catch (const std::exception& e) {
+                        LOG_ERROR("%s", e.what());
+                        exception = e.what();
+                        finished(std::nullopt);
+                    }
+                }
+            }
+        );
+    }
+
     void SearchPlaylistAsync(std::string query, int pageIndex, std::function<void(std::optional<BeatSaver::Playlist>)> finished){
         exception.clear();
         std::string searchPath = API_URL + "/playlists/id/" + query + "/" + std::to_string(pageIndex) ;
